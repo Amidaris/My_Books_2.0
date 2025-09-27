@@ -1,0 +1,2 @@
+FLASK_APP=mybooks.py
+FLASK_DEBUG=1

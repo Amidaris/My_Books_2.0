@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Moja Biblioteka</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>📚 Lista książek</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tytuł</th>
+            <th>Gatunek</th>
+            <th>Dostępna</th>
+            <th>Autor</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.genre }}</td>
+            <td>{{ "✅" if book.available else "❌" }}</td>
+            <td>{{ book.author.name }} {{ book.author.surname }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

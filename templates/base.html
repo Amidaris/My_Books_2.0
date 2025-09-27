@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Moja Biblioteka{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
+        header { margin-bottom: 30px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #333; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Moja Biblioteka</h1>
+        <nav>
+            <a href="/">Strona główna</a>
+            <a href="/books">Książki</a>
+            <a href="/authors">Autorzy</a>
+            <a href="/borrowings">Wypożyczenia</a>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
