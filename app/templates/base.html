@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Moja Biblioteka{% endblock %}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
-        header { margin-bottom: 30px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        nav a:hover { text-decoration: underline; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <h1>📚 Moja Biblioteka</h1>
@@ -22,16 +39,17 @@
     </header>
 
     {% with messages = get_flashed_messages() %}
-  {% if messages %}
+    {% if messages %}
     <ul>
-      {% for message in messages %}
+        {% for message in messages %}
         <li style="color: green;">{{ message }}</li>
-      {% endfor %}
+        {% endfor %}
     </ul>
-  {% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 
     {% block content %}
     {% endblock %}
 </body>
+
 </html>

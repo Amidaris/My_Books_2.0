@@ -3,21 +3,35 @@
 {% block title %}Autorzy{% endblock %}
 
 {% block content %}
-    <h2>👨‍🏫 Lista autorów</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Imię</th>
-            <th>Nazwisko</th>
-            <th>Narodowość</th>
-        </tr>
-        {% for author in authors %}
-        <tr>
-            <td>{{ author.id }}</td>
-            <td>{{ author.name }}</td>
-            <td>{{ author.surname }}</td>
-            <td>{{ author.nationality or "—" }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<h3>➕ Dodaj autora</h3>
+<form method="POST">
+    <label for="name">Imię:</label>
+    <input type="text" name="name" required><br>
+
+    <label for="surname">Nazwisko:</label>
+    <input type="text" name="surname" required><br>
+
+    <label for="nationality">Narodowość:</label>
+    <input type="text" name="nationality"><br>
+
+    <button type="submit">Dodaj</button>
+</form>
+
+<h2>👨‍🏫 Lista autorów</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Narodowość</th>
+    </tr>
+    {% for author in authors %}
+    <tr>
+        <td>{{ author.id }}</td>
+        <td>{{ author.name }}</td>
+        <td>{{ author.surname }}</td>
+        <td>{{ author.nationality or "—" }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

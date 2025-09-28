@@ -32,8 +32,18 @@ def delete_book(book_id):
     flash("❌ Książka została usunięta.")
     return redirect(url_for("books"))
 
-@app.route("/authors", strict_slashes=False)
+@app.route("/authors", strict_slashes=False, methods=["GET", "POST"])
 def authors():
+    if request.method == "POST":
+        name = request.form["name"]
+        surname = request.form["surname"]
+        nationality = request.form["nationality"]
+        new_author = Author(name=name, surname=surname, nationality=nationality)
+        db.session.add(new_author)
+        db.session.commit()
+        flash("👨‍🏫 Autor został dodany!")
+        return redirect(url_for("authors"))
+    
     all_authors = Author.query.all()
     return render_template("authors.html", authors=all_authors)
 
