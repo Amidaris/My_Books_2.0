@@ -3,23 +3,48 @@
 {% block title %}Książki{% endblock %}
 
 {% block content %}
-    <h2>📚 Lista książek</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Tytuł</th>
-            <th>Gatunek</th>
-            <th>Dostępna</th>
-            <th>Autor</th>
-        </tr>
-        {% for book in books %}
-        <tr>
-            <td>{{ book.id }}</td>
-            <td>{{ book.title }}</td>
-            <td>{{ book.genre }}</td>
-            <td>{{ "✅" if book.available else "❌" }}</td>
-            <td>{{ book.author.name }} {{ book.author.surname }}</td>
-        </tr>
+<h3>➕ Dodaj książkę</h3>
+<form method="POST">
+    <label for="title">Tytuł:</label>
+    <input type="text" name="title" required><br>
+
+    <label for="genre">Gatunek:</label>
+    <input type="text" name="genre"><br>
+
+    <label for="author_id">Autor:</label>
+    <select name="author_id" required>
+        {% for author in authors %}
+        <option value="{{ author.id }}">{{ author.name }} {{ author.surname }}</option>
         {% endfor %}
-    </table>
+    </select><br>
+
+    <button type="submit">Dodaj</button>
+</form>
+
+<h2>📚 Lista książek</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Tytuł</th>
+        <th>Gatunek</th>
+        <th>Dostępna</th>
+        <th>Autor</th>
+        <th>Akcje</th>
+    </tr>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.genre }}</td>
+        <td>{{ "✅" if book.available else "❌" }}</td>
+        <td>{{ book.author.name }} {{ book.author.surname }}</td>
+        <td>
+            <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" style="display:inline;">
+                <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć tę książkę?')">🗑️
+                    Usuń</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
