@@ -3,72 +3,49 @@
 {% block title %}Wypożyczenia{% endblock %}
 
 {% block content %}
-    <h3>➕ Dodaj wypożyczenie</h3>
-    <form method="POST">
-        <label for="book_id">Książka:</label>
-        <select name="book_id" required>
-            {% for book in books %}
-            <option value="{{ book.id }}">{{ book.title }} ({{ book.author.name }} {{ book.author.surname }})</option>
-            {% endfor %}
-        </select><br>
+<a href="{{ url_for('new_borrowings') }}">
+    <button>➕ Dodaj wypożyczenie</button>
+</a>
 
-        <label for="borrower_name">Imię wypożyczającego:</label>
-        <input type="text" name="borrower_name" required><br>
-
-        <label for="borrower_surname">Nazwisko wypożyczającego:</label>
-        <input type="text" name="borrower_surname" required><br>
-
-        <label for="borrow_date">Data wypożyczenia:</label>
-        <input type="date" name="borrow_date" required><br>
-
-        <label for="email">Email:</label>
-        <input type="email" name="email"><br>
-
-        <label for="phone">Telefon:</label>
-        <input type="text" name="phone"><br>
-
-        <button type="submit">Dodaj</button>
-    </form>
-
-    <h2>📦 Historia wypożyczeń</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Książka</th>
-            <th>Imię</th>
-            <th>Nazwisko</th>
-            <th>Data wypożyczenia</th>
-            <th>Data zwrotu</th>
-            <th>Email</th>
-            <th>Telefon</th>
-            <th>Akcje</th>
-        </tr>
-        {% for b in borrowings %}
-        <tr>
-            <td>{{ b.id }}</td>
-            <td>{{ b.book.title }}</td>
-            <td>{{ b.borrower_name }}</td>
-            <td>{{ b.borrower_surname }}</td>
-            <td>{{ b.borrow_date.strftime('%Y-%m-%d') }}</td>
-            <td>
-                {% if b.return_date %}
-                {{ b.return_date.strftime('%Y-%m-%d') }}
-                {% else %}
-                ⏳ W trakcie
-                {% endif %}
-            </td>
-            <td>{{ b.email or "—" }}</td>
-            <td>{{ b.phone or "—" }}</td>
-            <td>
-                {% if not b.return_date %}
-                <form method="POST" action="{{ url_for('return_book', borrowing_id=b.id) }}">
-                    <button type="submit" onclick="return confirm('Czy na pewno chcesz zwrócić książkę?')">🔄 Zwróć</button>
-                </form>
-                {% else %}
-                ✅ Zwrócona
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<h2>📦 Historia wypożyczeń</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Książka</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Data wypożyczenia</th>
+        <th>Data zwrotu</th>
+        <th>Email</th>
+        <th>Telefon</th>
+        <th>Akcje</th>
+    </tr>
+    {% for b in borrowings %}
+    <tr>
+        <td>{{ b.id }}</td>
+        <td>{{ b.book.title }}</td>
+        <td>{{ b.borrower_name }}</td>
+        <td>{{ b.borrower_surname }}</td>
+        <td>{{ b.borrow_date.strftime('%Y-%m-%d') }}</td>
+        <td>
+            {% if b.return_date %}
+            {{ b.return_date.strftime('%Y-%m-%d') }}
+            {% else %}
+            ⏳ W trakcie
+            {% endif %}
+        </td>
+        <td>{{ b.email or "—" }}</td>
+        <td>{{ b.phone or "—" }}</td>
+        <td>
+            {% if not b.return_date %}
+            <form method="POST" action="{{ url_for('return_book', borrowing_id=b.id) }}">
+                <button type="submit" onclick="return confirm('Czy na pewno chcesz zwrócić książkę?')">🔄 Zwróć</button>
+            </form>
+            {% else %}
+            ✅ Zwrócona
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

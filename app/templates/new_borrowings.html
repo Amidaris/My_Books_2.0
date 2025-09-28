@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Nowe wypożyczenie{% endblock %}
+
+{% block content %}
+    <h3>➕ Dodaj wypożyczenie</h3>
+    <form method="POST">
+        <label for="book_id">Książka:</label>
+        <select name="book_id" required>
+            {% for book in books %}
+            <option value="{{ book.id }}">{{ book.title }} ({{ book.author.name }} {{ book.author.surname }})</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="borrower_name">Imię wypożyczającego:</label>
+        <input type="text" name="borrower_name" required><br>
+
+        <label for="borrower_surname">Nazwisko wypożyczającego:</label>
+        <input type="text" name="borrower_surname" required><br>
+
+        <label for="borrow_date">Data wypożyczenia:</label>
+        <input type="date" name="borrow_date" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email"><br>
+
+        <label for="phone">Telefon:</label>
+        <input type="text" name="phone"><br>
+
+        <button type="submit">Dodaj</button>
+    </form>
+{% endblock %}

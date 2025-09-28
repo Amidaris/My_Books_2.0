@@ -52,9 +52,13 @@ def authors():
     all_authors = Author.query.all()
     return render_template("authors.html", authors=all_authors)
 
-
-@app.route("/borrowings", strict_slashes=False, methods=["GET", "POST"])
+@app.route("/borrowings", strict_slashes=False)
 def borrowings():
+    all_borrowings = Borrowings.query.all()
+    return render_template("borrowings.html", borrowings=all_borrowings)
+
+@app.route("/borrowings/new", strict_slashes=False, methods=["GET", "POST"])
+def new_borrowings():
     if request.method == "POST":
         book_id = request.form["book_id"]
         borrower_name = request.form["borrower_name"]
@@ -73,7 +77,7 @@ def borrowings():
             borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
         except ValueError:
             flash("⚠️ Niepoprawny format daty wypożyczenia.")
-            return redirect(url_for("borrowings"))
+            return redirect(url_for("new_borrowings"))
 
         # Utwórz wypożyczenie
         new_borrowing = Borrowings(
@@ -95,9 +99,8 @@ def borrowings():
         flash("📦 Wypożyczenie zostało zapisane!")
         return redirect(url_for("borrowings"))
 
-    all_borrowings = Borrowings.query.all()
     all_books = Book.query.filter_by(available=True).all()  # tylko dostępne książki
-    return render_template("borrowings.html", borrowings=all_borrowings, books=all_books)
+    return render_template("new_borrowings.html", books=all_books)
 
 
 @app.route("/borrowings/return/<int:borrowing_id>", methods=["POST"])
