@@ -61,10 +61,18 @@ def borrowings():
         borrower_surname = request.form["borrower_surname"]
         email = request.form.get("email")
         phone = request.form.get("phone")
+        borrow_date_str = request.form.get("borrow_date")
 
         # Walidacja: przynajmniej jedno pole kontaktowe
         if not email and not phone:
             flash("⚠️ Podaj przynajmniej email lub numer telefonu.")
+            return redirect(url_for("borrowings"))
+        
+        # Konwersja dat
+        try:
+            borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
+        except ValueError:
+            flash("⚠️ Niepoprawny format daty wypożyczenia.")
             return redirect(url_for("borrowings"))
 
         # Utwórz wypożyczenie
@@ -72,6 +80,7 @@ def borrowings():
             book_id=book_id,
             borrower_name=borrower_name,
             borrower_surname=borrower_surname,
+            borrow_date=borrow_date,
             email=email if email else None,
             phone=phone if phone else None
         )
