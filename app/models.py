@@ -37,6 +37,8 @@ class Borrowings(db.Model):
     borrower_surname = db.Column(db.String(100), nullable=False)
     borrow_date = db.Column(db.DateTime, default=datetime.utcnow)
     return_date = db.Column(db.DateTime, nullable=True)
+    email = db.Column(db.String(120), nullable=True)
+    phone = db.Column(db.String(20), nullable=True)
 
     def __str__(self):
         return f"{self.borrower_name} {self.borrower_surname} borrowed '{self.book.title}'"

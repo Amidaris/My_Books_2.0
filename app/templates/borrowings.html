@@ -18,6 +18,12 @@
         <label for="borrower_surname">Nazwisko wypożyczającego:</label>
         <input type="text" name="borrower_surname" required><br>
 
+        <label for="email">Email:</label>
+        <input type="email" name="email"><br>
+
+        <label for="phone">Telefon:</label>
+        <input type="text" name="phone"><br>
+
         <button type="submit">Dodaj</button>
     </form>
 
@@ -30,6 +36,8 @@
             <th>Nazwisko</th>
             <th>Data wypożyczenia</th>
             <th>Data zwrotu</th>
+            <th>Email</th>
+            <th>Telefon</th>
             <th>Akcje</th>
         </tr>
         {% for b in borrowings %}
@@ -46,6 +54,8 @@
                 ⏳ W trakcie
                 {% endif %}
             </td>
+            <td>{{ b.email or "—" }}</td>
+            <td>{{ b.phone or "—" }}</td>
             <td>
                 {% if not b.return_date %}
                 <form method="POST" action="{{ url_for('return_book', borrowing_id=b.id) }}">

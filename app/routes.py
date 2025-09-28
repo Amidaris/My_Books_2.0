@@ -59,12 +59,21 @@ def borrowings():
         book_id = request.form["book_id"]
         borrower_name = request.form["borrower_name"]
         borrower_surname = request.form["borrower_surname"]
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+
+        # Walidacja: przynajmniej jedno pole kontaktowe
+        if not email and not phone:
+            flash("⚠️ Podaj przynajmniej email lub numer telefonu.")
+            return redirect(url_for("borrowings"))
 
         # Utwórz wypożyczenie
         new_borrowing = Borrowings(
             book_id=book_id,
             borrower_name=borrower_name,
-            borrower_surname=borrower_surname
+            borrower_surname=borrower_surname,
+            email=email if email else None,
+            phone=phone if phone else None
         )
         db.session.add(new_borrowing)
 
