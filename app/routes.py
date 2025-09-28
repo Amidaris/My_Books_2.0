@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template
-from app.models import Book, Author
+from app.models import Book, Author, Borrowings
 import requests
 
 @app.route("/")
@@ -16,3 +16,8 @@ def books():
 def authors():
     all_authors = Author.query.all()
     return render_template("authors.html", authors=all_authors)
+
+@app.route("/borrowings", strict_slashes=False)
+def borrowings():
+    all_borrowings = Borrowings.query.all()
+    return render_template("borrowings.html", borrowings=all_borrowings)
