@@ -42,8 +42,14 @@ def delete_book(book_id):
     return redirect(url_for("books"))
 
 
-@app.route("/authors", strict_slashes=False, methods=["GET", "POST"])
+@app.route("/authors", strict_slashes=False)
 def authors():
+    all_authors = Author.query.all()
+    return render_template("authors.html", authors=all_authors)
+
+
+@app.route("/authors/new", strict_slashes=False, methods=["GET", "POST"])
+def new_author():
     if request.method == "POST":
         name = request.form["name"]
         surname = request.form["surname"]
@@ -55,7 +61,8 @@ def authors():
         return redirect(url_for("authors"))
     
     all_authors = Author.query.all()
-    return render_template("authors.html", authors=all_authors)
+    return render_template("new_author.html")
+
 
 @app.route("/borrowings", strict_slashes=False)
 def borrowings():

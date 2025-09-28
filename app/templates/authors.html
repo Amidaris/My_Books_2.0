@@ -3,19 +3,9 @@
 {% block title %}Autorzy{% endblock %}
 
 {% block content %}
-<h3>➕ Dodaj autora</h3>
-<form method="POST">
-    <label for="name">Imię:</label>
-    <input type="text" name="name" required><br>
-
-    <label for="surname">Nazwisko:</label>
-    <input type="text" name="surname" required><br>
-
-    <label for="nationality">Narodowość:</label>
-    <input type="text" name="nationality"><br>
-
-    <button type="submit">Dodaj</button>
-</form>
+<a href="{{ url_for('new_author') }}">
+    <button>➕ Dodaj autora</button>
+</a>
 
 <h2>👨‍🏫 Lista autorów</h2>
 <table>
