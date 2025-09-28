@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Wypożyczenia{% endblock %}
+
+{% block content %}
+    <h2>📦 Historia wypożyczeń</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Książka</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Data wypożyczenia</th>
+            <th>Data zwrotu</th>
+        </tr>
+        {% for b in borrowings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.book.title }}</td>
+            <td>{{ b.borrower_name }}</td>
+            <td>{{ b.borrower_surname }}</td>
+            <td>{{ b.borrow_date.strftime('%Y-%m-%d') }}</td>
+            <td>
+                {% if b.return_date %}
+                    {{ b.return_date.strftime('%Y-%m-%d') }}
+                {% else %}
+                    ⏳ W trakcie
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
