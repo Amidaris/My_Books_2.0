@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Książki{% endblock %}
+
+{% block content %}
+<h3>➕ Dodaj książkę</h3>
+<form method="POST">
+    <label for="title">Tytuł:</label>
+    <input type="text" name="title" required><br>
+
+    <label for="genre">Gatunek:</label>
+    <input type="text" name="genre"><br>
+
+    <label for="author_id">Autor:</label>
+    <select name="author_id" required>
+        {% for author in authors %}
+        <option value="{{ author.id }}">{{ author.name }} {{ author.surname }}</option>
+        {% endfor %}
+    </select><br>
+
+    <button type="submit">Dodaj</button>
+</form>
+{% endblock %}
