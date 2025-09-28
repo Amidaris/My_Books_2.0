@@ -3,6 +3,24 @@
 {% block title %}Wypożyczenia{% endblock %}
 
 {% block content %}
+    <h3>➕ Dodaj wypożyczenie</h3>
+    <form method="POST">
+        <label for="book_id">Książka:</label>
+        <select name="book_id" required>
+            {% for book in books %}
+            <option value="{{ book.id }}">{{ book.title }} ({{ book.author.name }} {{ book.author.surname }})</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="borrower_name">Imię wypożyczającego:</label>
+        <input type="text" name="borrower_name" required><br>
+
+        <label for="borrower_surname">Nazwisko wypożyczającego:</label>
+        <input type="text" name="borrower_surname" required><br>
+
+        <button type="submit">Dodaj</button>
+    </form>
+
     <h2>📦 Historia wypożyczeń</h2>
     <table>
         <tr>
@@ -12,6 +30,7 @@
             <th>Nazwisko</th>
             <th>Data wypożyczenia</th>
             <th>Data zwrotu</th>
+            <th>Akcje</th>
         </tr>
         {% for b in borrowings %}
         <tr>
@@ -22,9 +41,18 @@
             <td>{{ b.borrow_date.strftime('%Y-%m-%d') }}</td>
             <td>
                 {% if b.return_date %}
-                    {{ b.return_date.strftime('%Y-%m-%d') }}
+                {{ b.return_date.strftime('%Y-%m-%d') }}
                 {% else %}
-                    ⏳ W trakcie
+                ⏳ W trakcie
+                {% endif %}
+            </td>
+            <td>
+                {% if not b.return_date %}
+                <form method="POST" action="{{ url_for('return_book', borrowing_id=b.id) }}">
+                    <button type="submit" onclick="return confirm('Czy na pewno chcesz zwrócić książkę?')">🔄 Zwróć</button>
+                </form>
+                {% else %}
+                ✅ Zwrócona
                 {% endif %}
             </td>
         </tr>
