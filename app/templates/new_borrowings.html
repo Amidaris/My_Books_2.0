@@ -4,11 +4,14 @@
 
 {% block content %}
 <h3>➕ Dodaj wypożyczenie</h3>
+
 <form method="POST">
     <label for="book_id">Książka:</label>
     <select name="book_id" required>
-        {% for book in books %}
-        <option value="{{ book.id }}">{{ book.title }} ({{ book.author.name }} {{ book.author.surname }})</option>
+        {% for b in books %}
+        <option value="{{ b.id }}" {% if book and book.id == b.id %}selected{% endif %}>
+            {{ b.title }} ({{ b.author.name }} {{ b.author.surname }})
+        </option>
         {% endfor %}
     </select><br>
 

@@ -62,6 +62,11 @@ def new_book():
 @app.route("/books/delete/<int:book_id>", methods=["POST"])
 def delete_book(book_id):
     book = Book.query.get_or_404(book_id)
+
+    if not book.available:
+        flash("❌ Nie można usunąć książki, która jest aktualnie wypożyczona.", "error")
+        return redirect(url_for("books"))
+    
     db.session.delete(book)
     db.session.commit()
     flash("❌ Książka została usunięta.", "info")
@@ -168,9 +173,18 @@ def borrowings():
 @app.route("/borrowings/new", strict_slashes=False, methods=["GET", "POST"])
 def new_borrowings():
     current_date = datetime.utcnow().strftime("%Y-%m-%d")
+    book_id = request.args.get("book_id")
+    books = Book.query.filter_by(available=True).all()
+    selected_book = Book.query.get(book_id) if book_id else None
 
     if request.method == "POST":
         book_id = request.form["book_id"]
+        book = Book.query.get(book_id)
+
+        if book.available == 0:
+            flash("❌ Ta książka jest już wypożyczona i niedostępna.", "error")
+            return redirect(url_for("books", book_id=book_id))
+    
         borrower_name = request.form["borrower_name"]
         borrower_surname = request.form["borrower_surname"]
         email = request.form.get("email")
@@ -204,6 +218,10 @@ def new_borrowings():
         )
         db.session.add(new_borrowing)
 
+        # Oznacz książkę jako niedostępną
+        book = Book.query.get(book_id)
+        book.available = False
+
         # Zaktualizuj dostępność książki
         book = Book.query.get(book_id)
         if book:
@@ -214,7 +232,7 @@ def new_borrowings():
         return redirect(url_for("borrowings"))
 
     all_books = Book.query.filter_by(available=True).all()  # tylko dostępne książki
-    return render_template("new_borrowings.html", books=all_books, current_date=current_date)
+    return render_template("new_borrowings.html", books=books, book=selected_book, current_date=current_date)
 
 
 @app.route("/borrowings/return/<int:borrowing_id>", methods=["POST"])

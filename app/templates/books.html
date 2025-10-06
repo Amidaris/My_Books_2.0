@@ -6,13 +6,13 @@
 <a href="{{ url_for('new_book') }}">
     <button>➕ Dodaj książkę</button>
 </a>
-    <a href="{{ url_for('export_books') }}">
+<a href="{{ url_for('export_books') }}">
     <button>📥 Pobierz książki (CSV)</button>
 </a>
 
 <h2>📚 Lista książek</h2>
 <form method="GET" action="{{ url_for('books') }}" class="filter-row">
-        <div>
+    <div>
         <label for="genre">Filtruj po gatunku literackim:</label>
         <select name="genre">
             <option value="">— Wszystkie —</option>
@@ -38,8 +38,9 @@
         <label for="available">Filtruj po dostępności:</label>
         <select name="available">
             <option value="">— Wszystkie —</option>
-            <option value="true" {% if request.args.get('available') == 'true' %}selected{% endif %}>✅ Dostępna</option>
-            <option value="false" {% if request.args.get('available') == 'false' %}selected{% endif %}>❌ Niedostępna</option>
+            <option value="true" {% if request.args.get('available')=='true' %}selected{% endif %}>✅ Dostępna</option>
+            <option value="false" {% if request.args.get('available')=='false' %}selected{% endif %}>❌ Niedostępna
+            </option>
         </select>
     </div>
 
@@ -54,7 +55,8 @@
         <th>Gatunek literacki</th>
         <th>Dostępna</th>
         <th>Autor</th>
-        <th>Akcje</th>
+        <th>Wypożycz</th>
+        <th>Usuń</th>
     </tr>
     {% for book in books %}
     <tr>
@@ -64,8 +66,20 @@
         <td>{{ "✅" if book.available else "❌" }}</td>
         <td>{{ book.author.name }} {{ book.author.surname }}</td>
         <td>
+            {% if book.available %}
+            <a href="{{ url_for('new_borrowings', book_id=book.id) }}">
+                <button style="background-color: darkseagreen;">📖 Wypożycz</button>
+            </a>
+            {% else %}
+            <button disabled title="Książka jest już wypożyczona"
+                style="background-color: lightgray; cursor: not-allowed;">
+                ❌ Niedostępna
+            </button>
+            {% endif %}
+        </td>
+         <td>
             <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" style="display:inline;">
-                <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć tę książkę?')">🗑️
+                <button type="submit" style="background-color: crimson; color: white;" onclick="return confirm('Czy na pewno chcesz usunąć tę książkę?')">🗑️
                     Usuń</button>
             </form>
         </td>
