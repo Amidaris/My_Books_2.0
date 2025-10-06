@@ -8,6 +8,7 @@ class Author(db.Model):
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
     nationality = db.Column(db.String(100))
+    info_url = db.Column(db.String(300), nullable=True)
 
     books = db.relationship("Book", backref="author", lazy="dynamic")
 

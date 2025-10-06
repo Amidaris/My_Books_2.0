@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Edytuj autora{% endblock %}
+
+{% block content %}
+<h3>✏️ Edytuj autora</h3>
+<form method="POST">
+    <label for="name">Imię:</label>
+    <input type="text" name="name" value="{{ author.name }}" required><br>
+
+    <label for="surname">Nazwisko:</label>
+    <input type="text" name="surname" value="{{ author.surname }}" required><br>
+
+    <label for="nationality">Narodowość:</label>
+    <input type="text" name="nationality" value="{{ author.nationality }}"><br>
+
+    <label for="info_url">Link do informacji o autorze (np. Wikipedia):</label>
+    <input type="url" name="info_url" value="{{ author.info_url }}" placeholder="https://..."><br>
+
+    <button type="submit">💾 Zapisz zmiany</button>
+    <a href="{{ url_for('authors') }}"><button type="button">↩️ Powrót</button></a>
+</form>
+<form method="POST" action="{{ url_for('delete_author', author_id=author.id) }}" onsubmit="return confirm('Czy na pewno chcesz usunąć tego autora?');">
+    <button type="submit" style="background-color: crimson; color: white;">🗑️ Usuń autora</button>
+</form>
+{% endblock %}

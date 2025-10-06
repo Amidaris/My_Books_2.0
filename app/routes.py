@@ -64,6 +64,37 @@ def new_author():
     return render_template("new_author.html")
 
 
+@app.route("/authors/edit/<int:author_id>", methods=["GET", "POST"])
+def edit_author(author_id):
+    author = Author.query.get_or_404(author_id)
+
+    if request.method == "POST":
+        author.name = request.form["name"]
+        author.surname = request.form["surname"]
+        author.nationality = request.form["nationality"]
+        author.info_url = request.form.get("info_url")
+        db.session.commit()
+        flash("✏️ Autor został zaktualizowany!")
+        return redirect(url_for("authors"))
+
+    return render_template("edit_author.html", author=author)
+
+
+@app.route("/authors/delete/<int:author_id>", methods=["POST"])
+def delete_author(author_id):
+    author = Author.query.get_or_404(author_id)
+
+    # Sprawdź, czy autor ma przypisane książki
+    if author.books.count() > 0:
+        flash("⚠️ Nie można usunąć autora, który ma przypisane książki.")
+        return redirect(url_for("authors"))
+
+    db.session.delete(author)
+    db.session.commit()
+    flash("🗑️ Autor został usunięty.")
+    return redirect(url_for("authors"))
+
+
 @app.route("/borrowings", strict_slashes=False)
 def borrowings():
     all_borrowings = Borrowings.query.all()

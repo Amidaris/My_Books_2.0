@@ -14,6 +14,10 @@
     <label for="nationality">Narodowość:</label>
     <input type="text" name="nationality"><br>
 
+    <label for="info_url">Link do informacji o autorze (np. Wikipedia):</label>
+    <input type="url" name="info_url" placeholder="https://..." pattern="https?://.+" title="Podaj poprawny adres URL"><br>
+    <small>Podaj pełny adres URL zaczynający się od http:// lub https://</small><br>
+
     <button type="submit">Dodaj</button>
 </form>
 {% endblock %}
