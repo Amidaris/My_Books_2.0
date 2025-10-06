@@ -159,3 +159,28 @@ def return_book(borrowing_id):
     db.session.commit()
     flash("✅ Książka została zwrócona.")
     return redirect(url_for("borrowings"))
+
+
+@app.route("/borrowings/edit/<int:borrowing_id>", methods=["GET", "POST"])
+def edit_borrowing(borrowing_id):
+    borrowing = Borrowings.query.get_or_404(borrowing_id)
+
+    if request.method == "POST":
+        borrowing.borrower_name = request.form["borrower_name"]
+        borrowing.borrower_surname = request.form["borrower_surname"]
+        borrowing.email = request.form.get("email")
+        borrowing.phone = request.form.get("phone")
+
+        borrow_date_str = request.form.get("borrow_date")
+        try:
+            borrowing.borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
+        except ValueError:
+            flash("⚠️ Niepoprawny format daty wypożyczenia.")
+            return redirect(url_for("edit_borrowing", borrowing_id=borrowing.id))
+
+        db.session.commit()
+        flash("✏️ Wypożyczenie zostało zaktualizowane!")
+        return redirect(url_for("borrowings"))
+
+    return render_template("edit_borrowing.html", borrowing=borrowing)
+

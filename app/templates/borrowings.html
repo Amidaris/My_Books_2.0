@@ -19,6 +19,7 @@
         <th>Email</th>
         <th>Telefon</th>
         <th>Akcje</th>
+        <th>Edycja</th>
     </tr>
     {% for b in borrowings %}
     <tr>
@@ -44,6 +45,11 @@
             {% else %}
             ✅ Zwrócona
             {% endif %}
+        </td>
+        <td>
+            <a href="{{ url_for('edit_borrowing', borrowing_id=b.id) }}">
+                <button>✏️ Edytuj</button>
+            </a>
         </td>
     </tr>
     {% endfor %}

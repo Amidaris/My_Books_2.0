@@ -5,4 +5,7 @@
 {% block content %}
     <h2>Witaj w domowej bibliotece!</h2>
     <p>Możesz przeglądać książki, dodawać autorów i zarządzać wypożyczeniami.</p>
+    <div class="book">
+    <img src="{{ url_for('static', filename='book_image.jpg') }}" alt="Obrazek książki">
+</div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Edytuj wypożyczenie{% endblock %}
+
+{% block content %}
+<h3>✏️ Edytuj wypożyczenie</h3>
+<form method="POST">
+    <p><strong>Książka:</strong> {{ borrowing.book.title }}</p>
+
+    <label for="borrower_name">Imię wypożyczającego:</label>
+    <input type="text" name="borrower_name" value="{{ borrowing.borrower_name }}" required><br>
+
+    <label for="borrower_surname">Nazwisko wypożyczającego:</label>
+    <input type="text" name="borrower_surname" value="{{ borrowing.borrower_surname }}" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" value="{{ borrowing.email }}"><br>
+
+    <label for="phone">Telefon:</label>
+    <input type="text" name="phone" value="{{ borrowing.phone }}"><br>
+
+    <label for="borrow_date">Data wypożyczenia:</label>
+    <input type="date" name="borrow_date" value="{{ borrowing.borrow_date.strftime('%Y-%m-%d') }}"><br>
+
+    <button type="submit">💾 Zapisz zmiany</button>
+    <a href="{{ url_for('borrowings') }}"><button type="button">↩️ Powrót</button></a>
+</form>
+{% endblock %}
