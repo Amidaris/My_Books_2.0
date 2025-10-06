@@ -107,3 +107,34 @@ form.filter-row button {
 .filter-row select {
     width: 150px;
 }
+
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.flash {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.flash.success {
+    background-color: #e6ffe6;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.flash.error {
+    background-color: #ffe6e6;
+    color: crimson;
+    border: 1px solid #ef9a9a;
+}
+
+.flash.info {
+    background-color: #e6f0ff;
+    color: #1565c0;
+    border: 1px solid #90caf9;
+}

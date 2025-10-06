@@ -19,14 +19,14 @@
     <input type="text" name="borrower_surname" required><br>
 
     <label for="borrow_date">Data wypożyczenia:</label>
-    <input type="date" name="borrow_date" required><br>
+    <input type="date" name="borrow_date" max="{{ current_date }}" required><br>
 
     <label for="email">Email:</label>
     <input type="email" name="email"><br>
 
     <label for="phone">Telefon:</label>
-    <input type="text" name="phone"><br>
-
+    <input type="tel" name="phone" pattern="[0-9]{9}" title="Numer telefonu musi mieć dokładnie 9 cyfr"><br>
+    <small>Aby można było wypożyczyć książkę należy podać przynajmniej jeden rodzaj kontaktu: email lub numer telefonu.</small><br>
     <button type="submit">Dodaj</button>
 
     <a href="{{ url_for('borrowings') }}"><button type="button">↩️ Powrót</button></a>

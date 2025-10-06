@@ -52,7 +52,7 @@ def new_book():
         new_book = Book(title=title, genre=genre, author_id=author_id)
         db.session.add(new_book)
         db.session.commit()
-        flash("📘 Książka została dodana!")
+        flash("📘 Książka została dodana!", "success")
         return redirect(url_for("books"))
     
     all_authors = Author.query.all()
@@ -64,7 +64,7 @@ def delete_book(book_id):
     book = Book.query.get_or_404(book_id)
     db.session.delete(book)
     db.session.commit()
-    flash("❌ Książka została usunięta.")
+    flash("❌ Książka została usunięta.", "info")
     return redirect(url_for("books"))
 
 
@@ -102,7 +102,7 @@ def new_author():
         new_author = Author(name=name, surname=surname, nationality=nationality)
         db.session.add(new_author)
         db.session.commit()
-        flash("👨‍🏫 Autor został dodany!")
+        flash("👨‍🏫 Autor został dodany!", "success")
         return redirect(url_for("authors"))
     
     all_authors = Author.query.all()
@@ -120,7 +120,7 @@ def edit_author(author_id):
         author.info_url = request.form.get("info_url")
         author.main_genre = request.form.get("main_genre")
         db.session.commit()
-        flash("✏️ Autor został zaktualizowany!")
+        flash("✏️ Autor został zaktualizowany!", "info")
         return redirect(url_for("authors"))
 
     return render_template("edit_author.html", author=author)
@@ -132,12 +132,12 @@ def delete_author(author_id):
 
     # Sprawdź, czy autor ma przypisane książki
     if author.books.count() > 0:
-        flash("⚠️ Nie można usunąć autora, który ma przypisane książki.")
+        flash("⚠️ Nie można usunąć autora, który ma przypisane książki.", "error")
         return redirect(url_for("authors"))
 
     db.session.delete(author)
     db.session.commit()
-    flash("🗑️ Autor został usunięty.")
+    flash("🗑️ Autor został usunięty.", "info")
     return redirect(url_for("authors"))
 
 
@@ -158,6 +158,8 @@ def borrowings():
 
 @app.route("/borrowings/new", strict_slashes=False, methods=["GET", "POST"])
 def new_borrowings():
+    current_date = datetime.utcnow().strftime("%Y-%m-%d")
+
     if request.method == "POST":
         book_id = request.form["book_id"]
         borrower_name = request.form["borrower_name"]
@@ -168,16 +170,20 @@ def new_borrowings():
 
         # Walidacja: przynajmniej jedno pole kontaktowe
         if not email and not phone:
-            flash("⚠️ Podaj przynajmniej email lub numer telefonu.")
+            flash("⚠️ Nie udało się wypożyczyć książki. Podaj przynajmniej email lub numer telefonu.", "error")
             return redirect(url_for("borrowings"))
         
         # Konwersja dat
         try:
             borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
         except ValueError:
-            flash("⚠️ Niepoprawny format daty wypożyczenia.")
+            flash("⚠️ Niepoprawny format daty wypożyczenia.", "error")
             return redirect(url_for("new_borrowings"))
-
+        # Walidacja: data nie może być z przyszłości
+        if borrow_date > datetime.utcnow():
+            flash("⚠️ Data wypożyczenia nie może być w przyszłości.", "error")
+            return redirect(url_for("new_borrowings"))
+        
         # Utwórz wypożyczenie
         new_borrowing = Borrowings(
             book_id=book_id,
@@ -195,11 +201,11 @@ def new_borrowings():
             book.available = False
 
         db.session.commit()
-        flash("📦 Wypożyczenie zostało zapisane!")
+        flash("📦 Wypożyczenie zostało zapisane!", "success")
         return redirect(url_for("borrowings"))
 
     all_books = Book.query.filter_by(available=True).all()  # tylko dostępne książki
-    return render_template("new_borrowings.html", books=all_books)
+    return render_template("new_borrowings.html", books=all_books, current_date=current_date)
 
 
 @app.route("/borrowings/return/<int:borrowing_id>", methods=["POST"])
@@ -212,7 +218,7 @@ def return_book(borrowing_id):
         book.available = True
 
     db.session.commit()
-    flash("✅ Książka została zwrócona.")
+    flash("✅ Książka została zwrócona.", "success")
     return redirect(url_for("borrowings"))
 
 
@@ -230,7 +236,7 @@ def edit_borrowing(borrowing_id):
         try:
             borrowing.borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
         except ValueError:
-            flash("⚠️ Niepoprawny format daty wypożyczenia.")
+            flash("⚠️ Niepoprawny format daty wypożyczenia.", "error")
             return redirect(url_for("edit_borrowing", borrowing_id=borrowing.id))
 
         db.session.commit()

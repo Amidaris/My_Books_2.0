@@ -17,7 +17,7 @@
     <input type="email" name="email" value="{{ borrowing.email }}"><br>
 
     <label for="phone">Telefon:</label>
-    <input type="text" name="phone" value="{{ borrowing.phone }}"><br>
+    <input type="tel" name="phone" value="{{ borrowing.phone }}" pattern="[0-9]{9}" title="Numer telefonu musi mieć dokładnie 9 cyfr"><br>
 
     <label for="borrow_date">Data wypożyczenia:</label>
     <input type="date" name="borrow_date" value="{{ borrowing.borrow_date.strftime('%Y-%m-%d') }}"><br>
