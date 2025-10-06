@@ -99,7 +99,16 @@ def new_author():
         name = request.form["name"]
         surname = request.form["surname"]
         nationality = request.form["nationality"]
-        new_author = Author(name=name, surname=surname, nationality=nationality)
+        main_genre = request.form.get("main_genre")
+        info_url = request.form.get("info_url")
+        
+        new_author = Author(
+            name=name, 
+            surname=surname, 
+            nationality=nationality,
+             main_genre=main_genre,
+            info_url=info_url
+            )
         db.session.add(new_author)
         db.session.commit()
         flash("👨‍🏫 Autor został dodany!", "success")
