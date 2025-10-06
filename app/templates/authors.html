@@ -10,7 +10,7 @@
 <h2>👨‍🏫 Lista autorów</h2>
 
 <form method="GET" action="{{ url_for('authors') }}">
-    <label for="nationality">Narodowość:</label>
+    <label for="nationality">Filtruj po narodowości:</label>
     <select name="nationality">
         <option value="">— Wszystkie —</option>
         {% for nat in nationality_list %}
@@ -18,7 +18,7 @@
         {% endfor %}
     </select>
 
-    <label for="main_genre">Gatunek literacki:</label>
+    <label for="main_genre">Filtruj po gatunku literackim:</label>
     <select name="main_genre">
         <option value="">— Wszystkie —</option>
         {% for g in genre_list %}

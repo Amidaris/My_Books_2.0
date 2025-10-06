@@ -8,6 +8,16 @@
 </a>
 
 <h2>📦 Historia wypożyczeń</h2>
+<form method="GET" action="{{ url_for('borrowings') }}">
+    <label for="status">Status wypożyczenia:</label>
+    <select name="status">
+        <option value="">— Wszystkie —</option>
+        <option value="active" {% if request.args.get('status') == 'active' %}selected{% endif %}>⏳ W trakcie</option>
+        <option value="returned" {% if request.args.get('status') == 'returned' %}selected{% endif %}>✅ Zwrócona</option>
+    </select>
+    <button type="submit">🔎 Filtruj</button>
+</form>
+
 <table>
     <tr>
         <th>ID</th>

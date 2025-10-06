@@ -9,7 +9,7 @@
 
 <h2>📚 Lista książek</h2>
 <form method="GET" action="{{ url_for('books') }}">
-    <label for="genre">Filtruj po gatunku:</label>
+    <label for="genre">Filtruj po gatunku literackim:</label>
     <select name="genre">
         <option value="">— Wszystkie —</option>
         {% for g in genre_list %}

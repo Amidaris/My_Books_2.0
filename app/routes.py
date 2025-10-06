@@ -134,7 +134,16 @@ def delete_author(author_id):
 
 @app.route("/borrowings", strict_slashes=False)
 def borrowings():
-    all_borrowings = Borrowings.query.all()
+    status = request.args.get("status")
+
+    query = Borrowings.query
+
+    if status == "returned":
+        query = query.filter(Borrowings.return_date.isnot(None))
+    elif status == "active":
+        query = query.filter(Borrowings.return_date.is_(None))
+
+    all_borrowings = query.all()
     return render_template("borrowings.html", borrowings=all_borrowings)
 
 
