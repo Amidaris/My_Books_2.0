@@ -61,8 +61,27 @@ def delete_book(book_id):
 
 @app.route("/authors", strict_slashes=False)
 def authors():
-    all_authors = Author.query.all()
-    return render_template("authors.html", authors=all_authors)
+    nationality = request.args.get("nationality")
+    main_genre = request.args.get("main_genre")
+
+    query = Author.query
+
+    # Listy do filtrów
+    nationalities = db.session.query(Author.nationality).distinct().filter(Author.nationality.isnot(None)).all()
+    genres = db.session.query(Author.main_genre).distinct().filter(Author.main_genre.isnot(None)).all()
+
+    nationality_list = sorted(set(n[0] for n in nationalities if n[0]))
+    genre_list = sorted(set(g[0] for g in genres if g[0]))
+
+    if nationality:
+        query = query.filter(Author.nationality.ilike(f"%{nationality}%"))
+
+    if main_genre:
+        query = query.filter(Author.main_genre.ilike(f"%{main_genre}%"))
+    
+    all_authors = query.all()
+
+    return render_template("authors.html", authors=all_authors, nationality_list=nationality_list, genre_list=genre_list)
 
 
 @app.route("/authors/new", strict_slashes=False, methods=["GET", "POST"])
@@ -90,6 +109,7 @@ def edit_author(author_id):
         author.surname = request.form["surname"]
         author.nationality = request.form["nationality"]
         author.info_url = request.form.get("info_url")
+        author.main_genre = request.form.get("main_genre")
         db.session.commit()
         flash("✏️ Autor został zaktualizowany!")
         return redirect(url_for("authors"))

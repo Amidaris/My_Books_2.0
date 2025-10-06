@@ -17,6 +17,9 @@
     <label for="info_url">Link do informacji o autorze (np. Wikipedia):</label>
     <input type="url" name="info_url" value="{{ author.info_url }}" placeholder="https://..."><br>
 
+    <label for="main_genre">Główny gatunek literacki:</label>
+    <input type="text" name="main_genre" value="{{ author.main_genre if author else '' }}">
+
     <button type="submit">💾 Zapisz zmiany</button>
     <a href="{{ url_for('authors') }}"><button type="button">↩️ Powrót</button></a>
 </form>

@@ -18,6 +18,11 @@
     <input type="url" name="info_url" placeholder="https://..." pattern="https?://.+" title="Podaj poprawny adres URL"><br>
     <small>Podaj pełny adres URL zaczynający się od http:// lub https://</small><br>
 
+    <label for="main_genre">Główny gatunek literacki:</label>
+    <input type="text" name="main_genre" value="{{ author.main_genre if author else '' }}">
+
+
     <button type="submit">Dodaj</button>
+    <a href="{{ url_for('authors') }}"><button type="button">↩️ Powrót</button></a>
 </form>
 {% endblock %}
