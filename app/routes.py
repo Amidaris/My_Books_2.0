@@ -15,6 +15,7 @@ def index():
 def books():
     genre = request.args.get("genre")
     author_id = request.args.get("author_id")
+    available = request.args.get("available")
 
     # Pobierz unikalne gatunki
     genres = db.session.query(Book.genre).distinct().filter(Book.genre.isnot(None)).all()
@@ -23,6 +24,11 @@ def books():
     authors = Author.query.order_by(Author.name).all()
 
     query = Book.query
+
+    if available == "true":
+        query = query.filter(Book.available.is_(True))
+    elif available == "false":
+        query = query.filter(Book.available.is_(False))
 
     if genre:
         query = query.filter(Book.genre.ilike(f"%{genre}%"))

@@ -8,26 +8,41 @@
 </a>
 
 <h2>📚 Lista książek</h2>
-<form method="GET" action="{{ url_for('books') }}">
-    <label for="genre">Filtruj po gatunku literackim:</label>
-    <select name="genre">
-        <option value="">— Wszystkie —</option>
-        {% for g in genre_list %}
-        <option value="{{ g }}" {% if request.args.get('genre')==g %}selected{% endif %}>{{ g }}</option>
-        {% endfor %}
-    </select>
+<form method="GET" action="{{ url_for('books') }}" class="filter-row">
+        <div>
+        <label for="genre">Filtruj po gatunku literackim:</label>
+        <select name="genre">
+            <option value="">— Wszystkie —</option>
+            {% for g in genre_list %}
+            <option value="{{ g }}" {% if request.args.get('genre')==g %}selected{% endif %}>{{ g }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <label for="author_id">Filtruj po autorze:</label>
-    <select name="author_id">
-        <option value="">— Wszyscy —</option>
-        {% for author in authors %}
-        <option value="{{ author.id }}" {% if request.args.get('author_id')==author.id|string %}selected{% endif %}>
-            {{ author.name }} {{ author.surname }}
-        </option>
-        {% endfor %}
-    </select>
+    <div>
+        <label for="author_id">Filtruj po autorze:</label>
+        <select name="author_id">
+            <option value="">— Wszyscy —</option>
+            {% for author in authors %}
+            <option value="{{ author.id }}" {% if request.args.get('author_id')==author.id|string %}selected{% endif %}>
+                {{ author.name }} {{ author.surname }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <button type="submit">🔎 Filtruj</button>
+    <div>
+        <label for="available">Filtruj po dostępności:</label>
+        <select name="available">
+            <option value="">— Wszystkie —</option>
+            <option value="true" {% if request.args.get('available') == 'true' %}selected{% endif %}>✅ Dostępna</option>
+            <option value="false" {% if request.args.get('available') == 'false' %}selected{% endif %}>❌ Niedostępna</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">🔎 Filtruj</button>
+    </div>
 </form>
 <table>
     <tr>
