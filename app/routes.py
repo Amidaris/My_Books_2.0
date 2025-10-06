@@ -13,8 +13,25 @@ def index():
 
 @app.route("/books", strict_slashes=False)
 def books():
-    all_books = Book.query.all()
-    return render_template("books.html", books=all_books)
+    genre = request.args.get("genre")
+    author_id = request.args.get("author_id")
+
+    # Pobierz unikalne gatunki
+    genres = db.session.query(Book.genre).distinct().filter(Book.genre.isnot(None)).all()
+    genre_list = sorted(set(g[0] for g in genres if g[0]))
+
+    authors = Author.query.order_by(Author.name).all()
+
+    query = Book.query
+
+    if genre:
+        query = query.filter(Book.genre.ilike(f"%{genre}%"))
+
+    if author_id:
+        query = query.filter(Book.author_id == int(author_id))
+
+    books = query.all()
+    return render_template("books.html", books=books, genre_list=genre_list, authors=authors)
 
 
 @app.route("/books/new", strict_slashes=False, methods=["GET", "POST"])
