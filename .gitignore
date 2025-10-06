@@ -11,6 +11,3 @@ __pycache__/
 
 # SQLite database
 *.db
-
-# Flask-Migrate folder
-migrations/
