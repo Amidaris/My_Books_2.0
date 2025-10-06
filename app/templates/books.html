@@ -6,6 +6,9 @@
 <a href="{{ url_for('new_book') }}">
     <button>➕ Dodaj książkę</button>
 </a>
+    <a href="{{ url_for('export_books') }}">
+    <button>📥 Pobierz książki (CSV)</button>
+</a>
 
 <h2>📚 Lista książek</h2>
 <form method="GET" action="{{ url_for('books') }}" class="filter-row">
@@ -48,7 +51,7 @@
     <tr>
         <th>ID</th>
         <th>Tytuł</th>
-        <th>Gatunek</th>
+        <th>Gatunek literacki</th>
         <th>Dostępna</th>
         <th>Autor</th>
         <th>Akcje</th>

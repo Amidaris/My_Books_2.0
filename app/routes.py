@@ -4,6 +4,9 @@ from flask import render_template, redirect, url_for, flash, request
 from app.models import Book, Author, Borrowings
 from app import db
 import requests
+import csv
+from io import StringIO
+from flask import Response
 
 
 @app.route("/")
@@ -235,4 +238,87 @@ def edit_borrowing(borrowing_id):
         return redirect(url_for("borrowings"))
 
     return render_template("edit_borrowing.html", borrowing=borrowing)
+
+
+@app.route("/books/export", strict_slashes=False)
+def export_books():
+    books = Book.query.all()
+
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["ID", "Tytuł", "Gatunek", "Dostępna", "Autor"])
+
+    for book in books:
+        writer.writerow([
+            book.id,
+            book.title,
+            book.genre,
+            "Tak" if book.available else "Nie",
+            f"{book.author.name} {book.author.surname}"
+        ])
+
+    output.seek(0)
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=books.csv"}
+    )
+
+
+@app.route("/authors/export", strict_slashes=False)
+def export_authors():
+    authors = Author.query.all()
+
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["ID", "Imię", "Nazwisko", "Narodowość", "Gatunek", "Link"])
+
+    for a in authors:
+        writer.writerow([
+            a.id,
+            a.name,
+            a.surname,
+            a.nationality or "",
+            a.main_genre or "",
+            a.info_url or ""
+        ])
+
+    output.seek(0)
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=authors.csv"}
+    )
+
+
+@app.route("/borrowings/export", strict_slashes=False)
+def export_borrowings():
+    borrowings = Borrowings.query.all()
+
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "ID", "Tytuł książki", "Imię", "Nazwisko", "Data wypożyczenia",
+        "Data zwrotu", "Email", "Telefon", "Status"
+    ])
+
+    for b in borrowings:
+        writer.writerow([
+            b.id,
+            b.book.title,
+            b.borrower_name,
+            b.borrower_surname,
+            b.borrow_date.strftime("%Y-%m-%d"),
+            b.return_date.strftime("%Y-%m-%d") if b.return_date else "",
+            b.email or "",
+            b.phone or "",
+            "Zwrócona" if b.return_date else "W trakcie"
+        ])
+
+    output.seek(0)
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=borrowings.csv"}
+    )
 

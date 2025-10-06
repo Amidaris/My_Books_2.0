@@ -6,9 +6,12 @@
 <a href="{{ url_for('new_borrowings') }}">
     <button>➕ Dodaj wypożyczenie</button>
 </a>
+<a href="{{ url_for('export_borrowings') }}">
+    <button>📥 Pobierz wypożyczenia (CSV)</button>
+</a>
 
 <h2>📦 Historia wypożyczeń</h2>
-<form method="GET" action="{{ url_for('borrowings') }}">
+<form method="GET" action="{{ url_for('borrowings')}}" class="filter-row">
     <label for="status">Status wypożyczenia:</label>
     <select name="status">
         <option value="">— Wszystkie —</option>
