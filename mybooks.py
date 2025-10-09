@@ -10,7 +10,8 @@ def make_shell_context():
        "Book": Book,
        "Borrowings": Borrowings
    }
-print(app.url_map)
+
+# print(app.url_map) - sprawdzenie routes
 
 if __name__ == "__main__":
     app.run()
